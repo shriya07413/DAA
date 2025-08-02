@@ -1,0 +1,75 @@
+#include <stdio.h>
+
+// Function to print the current sub-array being sorted
+void printPass(int arr[], int low, int high) {
+    printf("Pass: ");
+    for (int i = low; i <= high; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+// Partition function (Lomuto partition scheme)
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1, temp;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            // swap arr[i] and arr[j]
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+
+    // swap arr[i + 1] and arr[high] (pivot)
+    temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+
+    return i + 1;
+}
+
+// Quick sort function
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        printPass(arr, low, high);  // Print only the current sub-array being processed
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int n;
+
+    // Input: number of elements
+    printf("number of elements: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    // Input: elements of the array
+    printf("elements: ");
+    for (int i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+
+    // Print original array
+    printf("Original array: ");
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+
+    // Perform quick sort
+    quickSort(arr, 0, n - 1);
+
+    // Print final sorted array
+    printf("Sorted array: ");
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+
+    return 0;
+}
