@@ -1,0 +1,65 @@
+#include <stdio.h>
+#define INF 99999
+#define MAX_N 20 // Maximum value for N
+
+//write your code here..
+void floydWarshall(int dist[MAX_N][MAX_N], int N) {
+    int i, j, k;
+    for (k = 0; k < N; k++) {
+        for (i = 0; i < N; i++) {
+            for (j = 0; j < N; j++) {
+                if (dist[i][k] != INF && dist[k][j] != INF &&
+                    dist[i][j] > dist[i][k] + dist[k][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int N, E;
+    int dist[MAX_N][MAX_N];
+    int i, j, u, v, w;
+
+    printf("Enter the number of vertices : ");
+    scanf("%d", &N);
+    printf("Enter the number of edges : ");
+    scanf("%d", &E);
+
+    // Initialize distance matrix
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            if (i == j)
+                dist[i][j] = 0;
+            else
+                dist[i][j] = INF;
+        }
+    }
+
+    // Input edges
+    for (i = 0; i < E; i++) {
+        printf("Enter source : ");
+        scanf("%d", &u);
+        printf("Enter destination : ");
+        scanf("%d", &v);
+        printf("Enter weight : ");
+        scanf("%d", &w);
+        dist[u - 1][v - 1] = w; // Convert to 0-based index
+    }
+
+    floydWarshall(dist, N);
+
+    printf("The following matrix shows the shortest distances between all pairs of the vertices.\n");
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            if (dist[i][j] ==INF)
+                printf("  INF");
+            else
+                printf("  %3d", dist[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
